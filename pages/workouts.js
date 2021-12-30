@@ -1,10 +1,10 @@
-import Head from "next/head";
-import AdminNavbar from "../components/Navbars/AdminNavbar";
-import FooterAdmin from "../components/Footers/FooterAdmin";
-import Sidebar from "../components/Sidebar/sidebar";
-import WeekPlan from "../components/WeekPlan";
-import WeekList from "../components/WeekList";
-import workoutData from "../fakedata/fakeWorkouts";
+import Head from 'next/head';
+import AdminNavbar from '../components/Navbars/AdminNavbar';
+import FooterAdmin from '../components/Footers/FooterAdmin';
+import Sidebar from '../components/Sidebar/Sidebar';
+import WeekPlan from '../components/WeekPlan';
+import WeekList from '../components/WeekList';
+import workoutData from '../fakedata/fakeWorkouts';
 
 export default function WorkoutsPage() {
   return (

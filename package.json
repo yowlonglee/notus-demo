@@ -42,5 +42,11 @@
     "prettier": "^2.5.1",
     "tailwindcss": "^2.0.4",
     "typescript": "^4.5.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "next/core-web-vitals",
+      "wesbos"
+    ]
   }
 }
