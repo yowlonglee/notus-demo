@@ -2,18 +2,22 @@
   "name": "demo",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 7777",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "build:tailwind": "tailwind build styles/index.css -o styles/tailwind.css"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.6",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@popperjs/core": "^2.11.0",
     "@tailwindcss/forms": "^0.4.0",
+    "apollo-upload-client": "^17.0.0",
     "chart.js": "^2.9.4",
+    "graphql": "^16.2.0",
     "next": "12.0.7",
+    "next-with-apollo": "^5.2.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-scripts": "^5.0.0"
