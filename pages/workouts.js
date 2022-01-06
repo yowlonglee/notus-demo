@@ -3,7 +3,7 @@ import AdminNavbar from '../components/Navbars/AdminNavbar';
 import FooterAdmin from '../components/Footers/FooterAdmin';
 import Sidebar from '../components/Sidebar/Sidebar';
 import WeekPlan from '../components/WeekPlan';
-import WeekList from '../components/WeekList';
+import CalendarHeader from '../components/CalendarHeader';
 import workoutData from '../fakedata/fakeWorkouts';
 
 export default function WorkoutsPage() {
@@ -19,7 +19,7 @@ export default function WorkoutsPage() {
       <Sidebar />
       <div className="relative md:ml-64 bg-blueGray-100">
         <AdminNavbar />
-        <WeekList weekLength={12} />
+        <CalendarHeader />
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <div className="flex flex-wrap mt-4">
             <div className="w-full mb-12 px-4">
