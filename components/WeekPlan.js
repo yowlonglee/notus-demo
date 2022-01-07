@@ -33,6 +33,8 @@ function getStatusColor(s) {
       return 'text-amber-500';
     case 'rest':
       return 'text-lightBlue-500';
+    default:
+      return 'text-blueGray-500';
   }
 }
 
