@@ -4,7 +4,6 @@ import withData from '../lib/withData';
 import '../styles/tailwind.css';
 
 export function App({ Component, pageProps, apollo }) {
-  console.log(apollo);
   return (
     <ApolloProvider client={apollo}>
       <Component {...pageProps} />;

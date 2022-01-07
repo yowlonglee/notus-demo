@@ -1,3 +1,3 @@
-import WorkoutsPage from './workouts';
+import calendarPage from './calendar';
 
-export default WorkoutsPage;
+export default calendarPage;
