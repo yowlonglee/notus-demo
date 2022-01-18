@@ -1,27 +1,8 @@
-import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 
 // components
 
 import TableDropdown from './Dropdowns/TableDropdown.js';
-
-const ALL_WORKOUTS_QUERY = gql`
-  query ALL_WORKOUTS_QUERY {
-    allWorkouts {
-      id
-      user {
-        id
-        name
-      }
-      title
-      date
-      type
-      detail
-      status
-    }
-  }
-`;
 
 const status = {
   none: '未進行',
@@ -42,15 +23,17 @@ function getShortDay(date) {
 
 function getStatusColor(s) {
   switch (s) {
-    case 'none':
+    case 'UNPLANNED':
       return 'text-blueGray-500';
-    case 'done':
+    case 'NAILED-IT':
       return 'text-emerald-500';
-    case 'skipped':
+    case 'MISSED':
       return 'text-red-500';
-    case 'modified':
+    case 'LACKLUSTER':
       return 'text-amber-500';
-    case 'rest':
+    case 'OVERACHIEVED':
+      return 'text-amber-500';
+    case 'REST':
       return 'text-lightBlue-500';
     default:
       return 'text-blueGray-500';
@@ -58,121 +41,95 @@ function getStatusColor(s) {
 }
 
 export default function WeekPlan({ color, workoutData }) {
-  const { data, error, loading } = useQuery(ALL_WORKOUTS_QUERY);
-  console.log({ data, error, loading });
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
   return (
-    <div
-      className={`relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded ${
-        color === 'light' ? 'bg-white' : 'bg-blueGray-700 text-white'
-      }`}
-    >
-      <div className="rounded-t mb-0 px-4 py-3 border-0">
-        <div className="flex flex-wrap items-center">
-          <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3
-              className={`font-semibold text-lg ${
-                color === 'light' ? 'text-blueGray-700' : 'text-white'
-              }`}
-            >
-              Card Tables
-            </h3>
-          </div>
-        </div>
-      </div>
-      <div className="block w-full overflow-x-auto">
-        {/* Week workout table */}
-        <table className="items-center w-full bg-transparent border-collapse">
-          <thead>
-            <tr>
-              <th
-                className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
-                  color === 'light'
-                    ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                    : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
-                }`}
-              >
-                日期
-              </th>
-              <th
-                className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
-                  color === 'light'
-                    ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                    : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
-                }`}
-              >
-                主課表
-              </th>
-              <th
-                className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
-                  color === 'light'
-                    ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                    : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
-                }`}
-              >
-                內容
-              </th>
-              <th
-                className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
-                  color === 'light'
-                    ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                    : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
-                }`}
-              >
-                狀態
-              </th>
+    <table className="items-center w-full bg-transparent border-collapse">
+      <thead>
+        <tr>
+          <th
+            className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
+              color === 'light'
+                ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
+            }`}
+          >
+            日期
+          </th>
+          <th
+            className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
+              color === 'light'
+                ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
+            }`}
+          >
+            主課表
+          </th>
+          <th
+            className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
+              color === 'light'
+                ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
+            }`}
+          >
+            內容
+          </th>
+          <th
+            className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
+              color === 'light'
+                ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
+            }`}
+          >
+            狀態
+          </th>
 
-              <th
-                className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
-                  color === 'light'
-                    ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                    : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
-                }`}
+          <th
+            className={`px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ${
+              color === 'light'
+                ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                : 'bg-blueGray-600 text-blueGray-200 border-blueGray-500'
+            }`}
+          />
+        </tr>
+      </thead>
+      <tbody>
+        {workoutData.map((dayWorkout) => {
+          const date = new Date(dayWorkout.date);
+          return (
+            <tr key={dayWorkout.id}>
+              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                <span
+                  className={`font-bold mr-3 ${
+                    color === 'light' ? 'text-blueGray-600' : 'text-white'
+                  }`}
+                >
+                  {getShortDay(date)}
+                </span>
+                <span>{date.getDate(date)}</span>
+              </td>
+              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                {dayWorkout.title}
+              </td>
+              <td
+                className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-pre p-4"
+                dangerouslySetInnerHTML={{ __html: dayWorkout.detail }}
               />
-            </tr>
-          </thead>
-          <tbody>
-            {workoutData.map((dayWorkout) => {
-              const date = new Date(dayWorkout.date);
-              return (
-                <tr key={dayWorkout.date}>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                    <span
-                      className={`font-bold mr-3 ${
-                        color === 'light' ? 'text-blueGray-600' : 'text-white'
-                      }`}
-                    >
-                      {getShortDay(date)}
-                    </span>
-                    <span>{date.getDate(date)}</span>
-                  </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {dayWorkout.workout}
-                  </td>
-                  <td
-                    className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                    dangerouslySetInnerHTML={{ __html: dayWorkout.detail }}
-                  />
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    <i
-                      className={`${getStatusColor(
-                        dayWorkout.status
-                      )} mr-2 fas fa-circle`}
-                    />{' '}
-                    {status[dayWorkout.status]}
-                  </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                    <TableDropdown />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
+              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                <i
+                  className={`${getStatusColor(
+                    dayWorkout.status
+                  )} mr-2 fas fa-circle`}
+                />{' '}
+                {status[dayWorkout.status]}
+              </td>
+              <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                <TableDropdown />
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
 
