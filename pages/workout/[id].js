@@ -42,8 +42,14 @@ export default function WorkoutPage({ query }) {
       <Head>
         <title>KRC - {workout.title}</title>
       </Head>
-      <p>This is a single workout page!</p>
-      <p>ID: {query.id}</p>
+      <div className="flex flex-wrap">
+        <div className="w-full mb-12 px-4">
+          <div className="relative bg-blueGray-100">
+            This is a single workout page!
+          </div>
+          <div>ID: {query.id}</div>
+        </div>
+      </div>
     </Layout>
   );
 }

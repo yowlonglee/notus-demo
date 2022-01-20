@@ -31,35 +31,39 @@ export default function CalendarPage() {
       <Head>
         <title>KRC - 行事曆</title>
       </Head>
-      <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-sm rounded bg-blueGray-700 text-white">
-        <div className="px-4 py-3">
-          <button
-            type="button"
-            name="today"
-            className="mr-3"
-            onClick={handleClick}
-          >
-            今天
-          </button>
-          <button
-            type="button"
-            name="prev"
-            className="mr-3"
-            onClick={handleClick}
-          >
-            上週
-          </button>
-          <button
-            type="button"
-            name="next"
-            className="mr-3"
-            onClick={handleClick}
-          >
-            下週
-          </button>
+      <div className="flex flex-wrap">
+        <div className="w-full mb-12 px-4">
+          <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-sm rounded bg-blueGray-700 text-white">
+            <div className="px-4 py-3">
+              <button
+                type="button"
+                name="today"
+                className="mr-3"
+                onClick={handleClick}
+              >
+                今天
+              </button>
+              <button
+                type="button"
+                name="prev"
+                className="mr-3"
+                onClick={handleClick}
+              >
+                上週
+              </button>
+              <button
+                type="button"
+                name="next"
+                className="mr-3"
+                onClick={handleClick}
+              >
+                下週
+              </button>
+            </div>
+          </div>
+          <Calendar date={router.query.date} />
         </div>
       </div>
-      <Calendar date={router.query.date} />
     </Layout>
   );
 }
