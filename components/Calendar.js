@@ -17,7 +17,7 @@ function getDateRange(someDate) {
   date.setDate(date.getDate() - 6);
   dateRange.start = date.toISOString();
 
-  console.log(dateRange);
+  // console.log(dateRange);
   return dateRange;
 }
 
