@@ -80,7 +80,7 @@ export default function Sidebar() {
           <hr className="my-4 md:min-w-full" />
           {/* Heading */}
           <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-            學員專區
+            教練專區
           </h6>
           {/* Navigation */}
 
@@ -96,13 +96,13 @@ export default function Sidebar() {
                   }`}
                 >
                   <i
-                    className={`fas fa-tv mr-2 text-sm ${
+                    className={`fas fa-user mr-2 text-sm ${
                       router.pathname.indexOf('/admin/dashboard') !== -1
                         ? 'opacity-75'
                         : 'text-blueGray-300'
                     }`}
                   />{' '}
-                  訓練課表
+                  學員
                 </a>
               </Link>
             </li>
@@ -124,7 +124,7 @@ export default function Sidebar() {
                         : 'text-blueGray-300'
                     }`}
                   />{' '}
-                  訊息
+                  課表
                 </a>
               </Link>
             </li>
@@ -146,7 +146,29 @@ export default function Sidebar() {
                         : 'text-blueGray-300'
                     }`}
                   />{' '}
-                  群組
+                  課程
+                </a>
+              </Link>
+            </li>
+
+            <li className="items-center">
+              <Link href="/createWorkout">
+                <a
+                  href="#pablo"
+                  className={`text-xs uppercase py-3 font-bold block ${
+                    router.pathname.indexOf('/admin/maps') !== -1
+                      ? 'text-lightBlue-500 hover:text-lightBlue-600'
+                      : 'text-blueGray-700 hover:text-blueGray-500'
+                  }`}
+                >
+                  <i
+                    className={`fas fa-plus mr-2 text-sm ${
+                      router.pathname.indexOf('/admin/maps') !== -1
+                        ? 'opacity-75'
+                        : 'text-blueGray-300'
+                    }`}
+                  />{' '}
+                  新增課表
                 </a>
               </Link>
             </li>
