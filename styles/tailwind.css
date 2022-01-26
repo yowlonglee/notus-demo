@@ -3340,6 +3340,10 @@ select {
     display: inline-block;
   }
 
+  .lg\:mt-3 {
+    margin-top: 0.75rem;
+  }
+
   .lg\:mr-4 {
     margin-right: 1rem;
   }
@@ -3374,10 +3378,6 @@ select {
   .lg\:hover\:text-blueGray-200:hover {
     --tw-text-opacity: 1;
     color: rgba(226, 232, 240, var(--tw-text-opacity));
-  }
-
-  .lg\:w-4\/12 {
-    width: 33.333333%;
   }
 
   .lg\:w-6\/12 {
