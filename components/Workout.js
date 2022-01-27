@@ -6,6 +6,10 @@ export default function Workout({ workout }) {
   const day = new Intl.DateTimeFormat('zh-Hant-tw', {
     weekday: 'short',
   }).format(date);
+  const formattedDate = new Intl.DateTimeFormat('zh-Hant-tw', {
+    month: 'short',
+    day: 'numeric',
+  }).format(date);
   function handleClick() {
     router.push(`/workout/${workout.id}`);
   }
@@ -14,9 +18,9 @@ export default function Workout({ workout }) {
       <div className="flex-auto p-4">
         <div className="flex flex-wrap">
           <div className="relative pr-4 flex-initial flex flex-col">
-            <span className="text-blueGray-400 font-bold text-sm">{`${
-              date.getMonth() + 1
-            }月${date.getDate()}日`}</span>
+            <span className="text-blueGray-400 font-bold text-sm">
+              {formattedDate}
+            </span>
             <span className="font-semibold text-blueGray-700">{day}</span>
           </div>
           <div className="flex-initial">
