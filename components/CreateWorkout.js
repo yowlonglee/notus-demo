@@ -49,8 +49,6 @@ export default function CreateWorkout() {
   });
 
   const { data, error, loading } = useQuery(ALL_USER_QUERY);
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
 
   const [
     createWorkout,
@@ -58,6 +56,12 @@ export default function CreateWorkout() {
   ] = useMutation(CREATE_WORKOUT_MUTATION, {
     variables: workout,
   });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  if (mutationLoading) return <p>Submitting...</p>;
+  if (mutationError) return <p>Submission Error: {mutationError.message}</p>;
+
   return (
     <div className="relative bg-blueGray-100 rounded-lg shadow-lg">
       <div className="rounded-t bg-white mb-0 px-6 py-6">
@@ -78,8 +82,10 @@ export default function CreateWorkout() {
           id="form"
           onSubmit={async (e) => {
             e.preventDefault();
+            console.log(workout);
             const res = await createWorkout();
             console.log(res);
+            console.log(mutationData);
           }}
         >
           <div className="flex flex-wrap">
