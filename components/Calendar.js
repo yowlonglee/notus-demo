@@ -1,5 +1,4 @@
-import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client';
 // import PropTypes from 'prop-types';
 import Workout from './Workout';
 // import WeekPlan from './WeekPlan';

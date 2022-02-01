@@ -1,5 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { useState } from 'react';
 
 const ALL_USER_QUERY = gql`

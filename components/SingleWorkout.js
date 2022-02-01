@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client';
 
 const SINGLE_WORKOUT_QUERY = gql`
   query SINGLE_WORKOUT_QUERY($id: ID!) {
