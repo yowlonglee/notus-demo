@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Calendar from '../../components/Calendar';
 import Layout from '../../components/Layout';
+import Calendar from '../../components/Calendar';
 
 export default function CalendarPage() {
   const router = useRouter();

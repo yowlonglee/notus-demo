@@ -1,9 +1,19 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import AppNavbar from './AppNavbar';
 import AppFooter from './AppFooter';
 import Sidebar from './Sidebar';
+import { useUser } from '../lib/useUser';
 
 export default function Layout({ children }) {
+  const me = useUser();
+  console.log(me);
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   if (!me) router.push('/login');
+  // });
   return (
     <>
       <Head>
