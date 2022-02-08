@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import NotificationDropdown from './Dropdowns/NotificationDropdown';
-import UserDropdown from './Dropdowns/UserDropdown';
+import UserDropdown from './UserDropdown';
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = useState('hidden');
