@@ -1,19 +1,60 @@
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+// import { CURRENT_USER_QUERY } from './useUser';
+
+const LOGIN_MUTATION = gql`
+  mutation LOGIN_MUTATION($email: String!, $password: String!) {
+    authenticateUserWithPassword(email: $email, password: $password) {
+      ... on UserAuthenticationWithPasswordSuccess {
+        item {
+          id
+          email
+          name
+        }
+      }
+      ... on UserAuthenticationWithPasswordFailure {
+        code
+        message
+      }
+    }
+  }
+`;
 
 export default function Login() {
-  const [login, setLogin] = useState({
+  const router = useRouter();
+  const [loginData, setLoginData] = useState({
     email: '',
     password: '',
   });
 
+  const [login, { data, loading }] = useMutation(LOGIN_MUTATION, {
+    variables: loginData,
+    // refetch the currently logged in user
+    // refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
+
   function handleChange(e) {
     e.preventDefault();
-    setLogin({
-      ...login,
+    setLoginData({
+      ...loginData,
       [e.target.name]: e.target.value,
     });
-    console.log(login);
   }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    // Send the email and password to the GraphQL API
+    await login();
+    const returnUrl = router.query.returnUrl || '/';
+    console.log('push');
+    router.push({ pathname: returnUrl });
+  }
+  const error =
+    data?.authenticateUserWithPassword?.__typename ===
+    'UserAuthenticationWithPasswordFailure'
+      ? data?.authenticateUserWithPassword
+      : undefined;
 
   return (
     <div className="container mx-auto px-4 h-full">
@@ -22,15 +63,9 @@ export default function Login() {
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
             <div className="flex-auto px-4 lg:px-10 py-10">
               <div className="text-blueGray-400 text-center mb-3 font-bold">
-                <small>請登入</small>
+                <small>{error ? error.message : '請登入'}</small>
               </div>
-              <form
-                method="POST"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  console.log(login);
-                }}
-              >
+              <form method="POST" onSubmit={handleSubmit}>
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -43,7 +78,7 @@ export default function Login() {
                     type="email"
                     name="email"
                     placeholder="email"
-                    value={login.email}
+                    value={loginData.email}
                     onChange={handleChange}
                   />
                 </div>
@@ -59,7 +94,7 @@ export default function Login() {
                     type="password"
                     name="password"
                     placeholder="password"
-                    value={login.password}
+                    value={loginData.password}
                     onChange={handleChange}
                   />
                 </div>
@@ -96,13 +131,6 @@ export default function Login() {
                 <small>忘記密碼？</small>
               </a>
             </div>
-            {/* <div className="w-1/2 text-right">
-              <Link href="/auth/register">
-                <a href="#pablo" className="text-blueGray-200">
-                  <small>新增帳號</small>
-                </a>
-              </Link>
-            </div> */}
           </div>
         </div>
       </div>
