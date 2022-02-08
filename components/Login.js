@@ -21,6 +21,10 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
+function update(cache) {
+  cache.evict({ id: 'ROOT_QUERY', fieldName: 'authenticatedItem' });
+}
+
 export default function Login() {
   const router = useRouter();
   const [loginData, setLoginData] = useState({
@@ -28,8 +32,11 @@ export default function Login() {
     password: '',
   });
 
-  const [login, { data, loading }] = useMutation(LOGIN_MUTATION, {
+  const [login, { data }] = useMutation(LOGIN_MUTATION, {
     variables: loginData,
+    // Run a cache evict function to remove authenticatedItem query from cache
+    // This makes Apollo do another new query from server
+    update,
     // refetch the currently logged in user
     // refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
@@ -47,7 +54,6 @@ export default function Login() {
     // Send the email and password to the GraphQL API
     await login();
     const returnUrl = router.query.returnUrl || '/';
-    console.log('push');
     router.push({ pathname: returnUrl });
   }
   const error =
