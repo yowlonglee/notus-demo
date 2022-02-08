@@ -6,7 +6,7 @@ import RouteGuard from './RouteGuard';
 
 export default function Layout({ children }) {
   return (
-    <>
+    <RouteGuard>
       <Head>
         <meta
           name="viewport"
@@ -14,22 +14,20 @@ export default function Layout({ children }) {
         />
         <title>Kobe Run Club</title>
       </Head>
-      <RouteGuard>
-        <Sidebar />
-        <div className="relative md:ml-64 bg-blueGray-100">
-          <AppNavbar />
-          <div className="relative bg-blueGray-800 md:pt-32 pb-32 pt-12">
-            <div className="px-4 md:px-10 mx-auto w-full">
-              <p className="text-white">Add something here</p>
-            </div>
-          </div>
-
-          <div className="px-4 md:px-10 mx-auto w-full -m-24">
-            {children}
-            <AppFooter />
+      <Sidebar />
+      <div className="relative md:ml-64 bg-blueGray-100">
+        <AppNavbar />
+        <div className="relative bg-blueGray-800 md:pt-32 pb-32 pt-12">
+          <div className="px-4 md:px-10 mx-auto w-full">
+            <p className="text-white">Add something here</p>
           </div>
         </div>
-      </RouteGuard>
-    </>
+
+        <div className="px-4 md:px-10 mx-auto w-full -m-24">
+          {children}
+          <AppFooter />
+        </div>
+      </div>
+    </RouteGuard>
   );
 }
