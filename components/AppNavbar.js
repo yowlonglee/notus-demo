@@ -1,4 +1,4 @@
-import UserDropdown from './Dropdowns/UserDropdown';
+import UserDropdown from './UserDropdown';
 
 export default function Navbar() {
   return (
@@ -14,7 +14,7 @@ export default function Navbar() {
           >
             行事曆
           </a>
-          {/* Form */}
+          {/* Search Form */}
           <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
             <div className="relative flex w-full flex-wrap items-stretch">
               <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
