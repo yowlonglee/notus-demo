@@ -7,12 +7,19 @@ export const CURRENT_USER_QUERY = gql`
         id
         email
         name
+        avatar {
+          image {
+            publicUrlTransformed
+          }
+          name
+        }
       }
     }
   }
 `;
 
 export function useUser() {
-  const { data } = useQuery(CURRENT_USER_QUERY);
-  return data?.authenticatedItem;
+  const { data, loading } = useQuery(CURRENT_USER_QUERY);
+  // return data?.authenticatedItem;
+  return { data, loading };
 }
