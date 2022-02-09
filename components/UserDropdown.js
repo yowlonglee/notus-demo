@@ -38,7 +38,7 @@ export default function UserDropdown() {
         <div className="items-center flex">
           <span className="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
             <Image
-              alt={user.avatar.name}
+              alt={user.avatar.name || 'user'}
               className="w-full rounded-full align-middle border-none shadow-lg"
               src={user.avatar.image.publicUrlTransformed}
               width={48}
