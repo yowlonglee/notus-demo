@@ -21,6 +21,7 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
+// TODO: Query item shouldn't be hard coded
 function update(cache) {
   cache.evict({ id: 'ROOT_QUERY', fieldName: 'authenticatedItem' });
 }
@@ -34,8 +35,10 @@ export default function Login() {
 
   const [login, { data }] = useMutation(LOGIN_MUTATION, {
     variables: loginData,
+    // "update" is an official useMutation function
     // Run a cache evict function to remove authenticatedItem query from cache
     // This makes Apollo do another new query from server
+    // Another (maybe) approach is use the "refetch" helper function when returned from login page
     update,
     // refetch the currently logged in user
     // refetchQueries: [{ query: CURRENT_USER_QUERY }],
