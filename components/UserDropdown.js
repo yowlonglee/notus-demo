@@ -1,7 +1,9 @@
 import React from 'react';
 import { createPopper } from '@popperjs/core';
 import Image from 'next/image';
+import { useMutation } from '@apollo/client';
 import { useUser } from './useUser';
+import Logout from './Logout';
 
 export default function UserDropdown() {
   // dropdown props
@@ -20,11 +22,12 @@ export default function UserDropdown() {
   const {
     data: { authenticatedItem: user },
   } = useUser();
+
   return (
     <>
-      <a
-        className="text-blueGray-500 block"
-        href="#pablo"
+      <button
+        type="button"
+        className="text-blueGray-500 block rounded-full"
         ref={btnDropdownRef}
         onClick={(e) => {
           e.preventDefault();
@@ -46,7 +49,7 @@ export default function UserDropdown() {
             />
           </span>
         </div>
-      </a>
+      </button>
       <div
         ref={popoverDropdownRef}
         className={`${
@@ -75,13 +78,7 @@ export default function UserDropdown() {
           Something else here
         </a>
         <div className="h-0 my-2 border border-solid border-blueGray-100" />
-        <a
-          href="#pablo"
-          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          onClick={(e) => e.preventDefault()}
-        >
-          登出
-        </a>
+        <Logout className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 text-left" />
       </div>
     </>
   );
