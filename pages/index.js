@@ -1,3 +1,3 @@
-import calendarPage from './calendar';
+import CalendarPage from './calendar';
 
-export default calendarPage;
+export default CalendarPage;
