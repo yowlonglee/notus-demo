@@ -21,10 +21,7 @@ export default function Sidebar() {
         </button>
         {/* Brand */}
         <Link href="/">
-          <a
-            href="#pablo"
-            className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-          >
+          <a className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0">
             Kobe Run Club
           </a>
         </Link>
@@ -110,7 +107,6 @@ export default function Sidebar() {
             <li className="items-center">
               <Link href="/admin/tables">
                 <a
-                  href="#pablo"
                   className={`text-xs uppercase py-3 font-bold block ${
                     router.pathname.indexOf('/admin/tables') !== -1
                       ? 'text-lightBlue-500 hover:text-lightBlue-600'
@@ -132,7 +128,6 @@ export default function Sidebar() {
             <li className="items-center">
               <Link href="/admin/maps">
                 <a
-                  href="#pablo"
                   className={`text-xs uppercase py-3 font-bold block ${
                     router.pathname.indexOf('/admin/maps') !== -1
                       ? 'text-lightBlue-500 hover:text-lightBlue-600'
@@ -154,21 +149,41 @@ export default function Sidebar() {
             <li className="items-center">
               <Link href="/createWorkout">
                 <a
-                  href="#pablo"
                   className={`text-xs uppercase py-3 font-bold block ${
-                    router.pathname.indexOf('/admin/maps') !== -1
+                    router.pathname.indexOf('/createWorkout') !== -1
                       ? 'text-lightBlue-500 hover:text-lightBlue-600'
                       : 'text-blueGray-700 hover:text-blueGray-500'
                   }`}
                 >
                   <i
                     className={`fas fa-plus mr-2 text-sm ${
-                      router.pathname.indexOf('/admin/maps') !== -1
+                      router.pathname.indexOf('/createWorkout') !== -1
                         ? 'opacity-75'
                         : 'text-blueGray-300'
                     }`}
                   />{' '}
                   新增課表
+                </a>
+              </Link>
+            </li>
+
+            <li className="items-center">
+              <Link href="/createUser">
+                <a
+                  className={`text-xs uppercase py-3 font-bold block ${
+                    router.pathname.indexOf('/createUser') !== -1
+                      ? 'text-lightBlue-500 hover:text-lightBlue-600'
+                      : 'text-blueGray-700 hover:text-blueGray-500'
+                  }`}
+                >
+                  <i
+                    className={`fas fa-plus mr-2 text-sm ${
+                      router.pathname.indexOf('/createUser') !== -1
+                        ? 'opacity-75'
+                        : 'text-blueGray-300'
+                    }`}
+                  />{' '}
+                  新增學員
                 </a>
               </Link>
             </li>
