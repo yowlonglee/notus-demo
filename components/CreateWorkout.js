@@ -97,7 +97,9 @@ export default function CreateWorkout() {
                   主要課表
                 </label>
                 <input
+                  id="title"
                   type="text"
+                  name="title"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   value={workout.title}
                   placeholder="今天的主要課表"
@@ -118,6 +120,7 @@ export default function CreateWorkout() {
                 </label>
                 <select
                   id="type"
+                  name="type"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   value={workout.type}
                   onChange={(e) => {
@@ -135,14 +138,15 @@ export default function CreateWorkout() {
               <div className="relative w-full mb-3">
                 <label
                   className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                  htmlFor="type"
+                  htmlFor="user"
                 >
                   對象
                 </label>
                 <select
-                  id="type"
+                  id="user"
+                  name="user"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  value={workout.useId}
+                  value={workout.userId}
                   onChange={(e) => {
                     e.preventDefault();
                     setWorkout({ ...workout, userId: e.target.value });
@@ -167,6 +171,7 @@ export default function CreateWorkout() {
                 <input
                   type="date"
                   id="date"
+                  name="date"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   value={workout.date}
                   onChange={(e) => {
@@ -201,6 +206,7 @@ export default function CreateWorkout() {
                 <textarea
                   type="text"
                   id="detail"
+                  name="detail"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   rows="4"
                   placeholder="今天的訓練內容"
