@@ -1,4 +1,59 @@
+import { useState } from 'react';
+import { gql, useMutation } from '@apollo/client';
+import generator from 'generate-password';
+
+const CREATE_USER_MUTATION = gql`
+  mutation CREATE_USER_MUTATION(
+    $name: String!
+    $email: String!
+    $password: String!
+  ) {
+    createUser(
+      data: {
+        name: $name
+        email: $email
+        password: $password
+        avatar: { create: { name: $name } }
+      }
+    ) {
+      name
+      id
+      email
+      password_is_set
+    }
+  }
+`;
+
 export default function CreateUser() {
+  const initial = {
+    name: '',
+    email: '',
+  };
+  const [user, setUser] = useState(initial);
+
+  const [createUser] = useMutation(CREATE_USER_MUTATION, {
+    variables: {
+      ...user,
+      password: generator.generate(),
+    },
+  });
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await createUser();
+    // Clear form
+    setUser(initial);
+  }
+
+  function handleChange(e) {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setUser({
+      ...user,
+      [name]: value,
+    });
+  }
+
   return (
     <div className="relative bg-blueGray-100 rounded-lg shadow-lg">
       <div className="rounded-t bg-white mb-0 px-6 py-6">
@@ -15,13 +70,7 @@ export default function CreateUser() {
         </div>
       </div>
       <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-        <form
-          id="form"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            console.log('Add user');
-          }}
-        >
+        <form id="form" onSubmit={handleSubmit}>
           <div className="flex flex-wrap">
             <div className="w-full px-4">
               <div className="relative w-full mb-3 mt-3">
@@ -36,11 +85,9 @@ export default function CreateUser() {
                   type="text"
                   name="name"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  value=""
+                  value={user.name}
                   placeholder="名稱"
-                  onChange={(e) => {
-                    e.preventDefault();
-                  }}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -57,11 +104,9 @@ export default function CreateUser() {
                   type="email"
                   name="email"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  value=""
+                  value={user.email}
                   placeholder="email"
-                  onChange={(e) => {
-                    e.preventDefault();
-                  }}
+                  onChange={handleChange}
                 />
               </div>
             </div>
