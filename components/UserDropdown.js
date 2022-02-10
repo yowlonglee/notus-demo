@@ -1,9 +1,9 @@
 import React from 'react';
 import { createPopper } from '@popperjs/core';
 import Image from 'next/image';
-import { useMutation } from '@apollo/client';
 import { useUser } from './useUser';
 import Logout from './Logout';
+import defaultAvatar from '../public/img/krclogo.jpg';
 
 export default function UserDropdown() {
   // dropdown props
@@ -41,9 +41,9 @@ export default function UserDropdown() {
         <div className="items-center flex">
           <span className="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
             <Image
-              alt={user.avatar.name || 'user'}
+              alt={user?.name || 'user'}
               className="w-full rounded-full align-middle border-none shadow-lg"
-              src={user.avatar.image.publicUrlTransformed}
+              src={user.avatar?.image.publicUrlTransformed || defaultAvatar}
               width={48}
               height={48}
             />
