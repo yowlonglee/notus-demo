@@ -1,4 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 // import { CURRENT_USER_QUERY } from './useUser';
@@ -132,13 +133,11 @@ export default function Login() {
           </div>
           <div className="flex flex-wrap mt-6 relative">
             <div className="w-1/2">
-              <a
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-                className="text-blueGray-200"
-              >
-                <small>忘記密碼？</small>
-              </a>
+              <Link href="/requestReset">
+                <a className="text-blueGray-200">
+                  <small>忘記密碼？</small>
+                </a>
+              </Link>
             </div>
           </div>
         </div>

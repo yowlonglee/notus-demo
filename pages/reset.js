@@ -1,10 +1,20 @@
 import AuthLayout from '../components/AuthLayout';
-import Login from '../components/Login';
+import RequestReset from '../components/RequestReset';
+import Reset from '../components/Reset';
 
-export default function ResetPage() {
+export default function ResetPage({ query }) {
+  if (!query.token) {
+    return (
+      <AuthLayout>
+        <RequestReset />
+      </AuthLayout>
+    );
+  }
+
   return (
     <AuthLayout>
-      <Login />
+      <p className="text-blueGray-500">Hey!!! {query.token}</p>
+      <Reset token={query.token} />
     </AuthLayout>
   );
 }
