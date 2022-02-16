@@ -4,7 +4,7 @@ import AppFooter from './AppFooter';
 import Sidebar from './Sidebar';
 import RouteGuard from './RouteGuard';
 
-export default function Layout({ children }) {
+export default function Layout({ children, pageTitle }) {
   return (
     <RouteGuard>
       <Head>
@@ -16,10 +16,10 @@ export default function Layout({ children }) {
       </Head>
       <Sidebar />
       <div className="relative md:ml-64 bg-blueGray-100">
-        <AppNavbar />
+        <AppNavbar pageTitle={pageTitle} />
         <div className="relative bg-blueGray-800 md:pt-32 pb-32 pt-12">
           <div className="px-4 md:px-10 mx-auto w-full">
-            <p className="text-white">Add something here</p>
+            <p className="text-white">Header area</p>
           </div>
         </div>
 
