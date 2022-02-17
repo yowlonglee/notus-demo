@@ -1370,6 +1370,11 @@ select {
   border-collapse: separate;
 }
 
+.border-red-500 {
+  --tw-border-opacity: 1;
+  border-color: rgba(239, 68, 68, var(--tw-border-opacity));
+}
+
 .border-gray-200 {
   --tw-border-opacity: 1;
   border-color: rgba(228, 228, 231, var(--tw-border-opacity));
@@ -3557,6 +3562,10 @@ select {
 
   .lg\:w-6\/12 {
     width: 50%;
+  }
+
+  .lg\:w-8\/12 {
+    width: 66.666667%;
   }
 
   .lg\:w-9\/12 {
