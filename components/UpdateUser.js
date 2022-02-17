@@ -5,21 +5,10 @@ import { CURRENT_USER_QUERY, useUser } from './useUser';
 import defaultAvatar from '../public/img/krclogo.jpg';
 
 const UPDATE_USER_MUTATION = gql`
-  mutation UPDATE_USER_MUTATION(
-    $id: ID!
-    $name: String
-    $email: String
-    $avatarId: ID!
-    $avatar: Upload
-  ) {
+  mutation UPDATE_USER_MUTATION($id: ID!, $name: String, $email: String) {
     updateUser(id: $id, data: { name: $name, email: $email }) {
       name
       email
-    }
-    updateAvatar(id: $avatarId, data: { image: $avatar }) {
-      image {
-        publicUrlTransformed
-      }
     }
   }
 `;
@@ -32,6 +21,16 @@ const UPDATE_PASSWORD_MUTATION = gql`
   }
 `;
 
+const UPDATE_AVATAR_MUTATION = gql`
+  mutation UPDATE_AVATAR_MUTATION($id: ID!, $image: Upload) {
+    updateAvatar(id: $id, data: { image: $image }) {
+      image {
+        publicUrlTransformed
+      }
+    }
+  }
+`;
+
 export default function UpdateUser() {
   const { data } = useUser();
   const uploader = useRef(null);
@@ -40,18 +39,28 @@ export default function UpdateUser() {
     id: data.authenticatedItem.id,
     name: data.authenticatedItem.name,
     email: data.authenticatedItem.email,
-    avatarId: data.authenticatedItem.avatar.id,
   });
 
   const [password, setPassword] = useState('');
 
+  const [avatar, setAvatar] = useState({
+    id: data.authenticatedItem.avatar.id,
+    image: '',
+    preview: '',
+  });
+
   const [updateUser] = useMutation(UPDATE_USER_MUTATION, {
     variables: user,
-    refetchQueries: [CURRENT_USER_QUERY],
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
   const [updatePassword] = useMutation(UPDATE_PASSWORD_MUTATION, {
     variables: { id: user.id, password },
+  });
+
+  const [updateAvatar] = useMutation(UPDATE_AVATAR_MUTATION, {
+    variables: avatar,
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
   function handleClick(e) {
@@ -76,7 +85,25 @@ export default function UpdateUser() {
 
   function handleAvatarChange(e) {
     e.preventDefault();
-    // [value] = e.target.files;
+    // Get the first item from the FileList array and store it in the "value" variable
+    const [value] = e.target.files;
+
+    // Update state
+    setAvatar({
+      ...avatar,
+      image: value,
+      // Generate a thumbnail preview of the image
+      preview: URL.createObjectURL(value),
+    });
+  }
+
+  function handleAvatarReset(e) {
+    e.preventDefault();
+    setAvatar({
+      ...avatar,
+      image: '',
+      preview: '',
+    });
   }
 
   async function handleUserSubmit(e) {
@@ -90,6 +117,17 @@ export default function UpdateUser() {
     await updatePassword();
   }
 
+  async function handleAvatarSubmit(e) {
+    e.preventDefault();
+    await updateAvatar();
+    // Clear
+    setAvatar({
+      ...avatar,
+      image: '',
+      preview: '',
+    });
+  }
+
   return (
     <>
       <div className="w-full lg:w-4/12 px-4">
@@ -101,33 +139,44 @@ export default function UpdateUser() {
                   <Image
                     alt={user.name || 'user'}
                     src={
+                      avatar.preview ||
                       data.authenticatedItem.avatar.image
-                        .publicUrlTransformed || defaultAvatar
+                        .publicUrlTransformed ||
+                      defaultAvatar
                     }
                     width={150}
                     height={150}
                   />
                 </div>
-                {/* Add preview here */}
               </div>
             </div>
             <div className="w-full px-4 text-center mt-20">
               <div className="flex justify-center py-4 lg:pt-4 pt-8">
                 <button
+                  hidden={avatar.preview}
                   type="button"
-                  className="bg-blueGray-700 active:bg-blueGray-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                  className="bg-blueGray-700 active:bg-blueGray-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
                   onClick={handleClick}
                 >
                   變更頭像
                 </button>
                 <button
+                  hidden={!avatar.preview}
                   type="submit"
                   form="avatar"
-                  className="bg-white text-red-500 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 border-red-500"
+                  className="bg-blueGray-700 active:bg-blueGray-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                 >
                   確定變更
                 </button>
-                <form id="avatar" onSubmit={handleUserSubmit} method="POST">
+                <button
+                  hidden={!avatar.preview}
+                  type="button"
+                  className="bg-white text-red-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                  onClick={handleAvatarReset}
+                >
+                  取消
+                </button>
+                <form id="avatar" onSubmit={handleAvatarSubmit} method="POST">
                   <label className="hidden">
                     <input
                       type="file"
@@ -216,7 +265,7 @@ export default function UpdateUser() {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="password"
                     >
-                      密碼
+                      新密碼
                     </label>
                     <input
                       id="password"
