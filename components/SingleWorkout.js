@@ -80,6 +80,7 @@ export default function SingleWorkout({ id }) {
   console.log(workout);
 
   const [analysis, setAnalysis] = useState({});
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     // This function runs when the things we are watching change
@@ -186,6 +187,7 @@ export default function SingleWorkout({ id }) {
                     type="range"
                     value={analysis.feels}
                     onChange={handleAnalysisChange}
+                    disabled={!editing}
                   />
                 </div>
               </div>
@@ -204,6 +206,7 @@ export default function SingleWorkout({ id }) {
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     onChange={handleAnalysisChange}
                     value={analysis.status}
+                    disabled={!editing}
                   >
                     {status.map((item) => (
                       <option key={item.value} value={item.value}>
@@ -230,6 +233,7 @@ export default function SingleWorkout({ id }) {
                     rows="4"
                     value={analysis.note}
                     onChange={handleAnalysisChange}
+                    disabled={!editing}
                   />
                 </div>
               </div>
@@ -238,6 +242,10 @@ export default function SingleWorkout({ id }) {
               <button
                 type="button"
                 className="bg-blueGray-700 active:bg-blueGray-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                hidden={editing}
+                onClick={() => {
+                  setEditing(true);
+                }}
               >
                 編輯
               </button>
@@ -245,12 +253,22 @@ export default function SingleWorkout({ id }) {
                 type="submit"
                 form="analysis"
                 className="bg-blueGray-700 active:bg-blueGray-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                hidden={!editing}
               >
-                確定
+                確定變更
               </button>
               <button
                 type="button"
                 className="bg-white text-red-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 border border-solid border-red-500 active:bg-red-600 active:border-red-600 active:text-white"
+                hidden={!editing}
+                onClick={() => {
+                  setEditing(false);
+                  setAnalysis({
+                    status: workout.status,
+                    feels: workout.feels,
+                    note: workout.note,
+                  });
+                }}
               >
                 取消
               </button>
