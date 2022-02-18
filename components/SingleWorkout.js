@@ -1,5 +1,7 @@
 import Head from 'next/head';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
+import Loading from './Loading';
 
 const SINGLE_WORKOUT_QUERY = gql`
   query SINGLE_WORKOUT_QUERY($id: ID!) {
@@ -35,13 +37,23 @@ const SINGLE_WORKOUT_QUERY = gql`
   }
 `;
 
-// const USER_EDIT_WORKOUT_MUTATION = gql`
-//   mutation USER_EDIT_WORKOUT_MUTATION(
-//     $note: String
-//   ) {
-
-//   }
-// `;
+const UPDATE_ANALYSIS_MUTATION = gql`
+  mutation UPDATE_ANALYSIS_MUTATION(
+    $id: ID!
+    $status: String!
+    $note: String
+    $feels: Int!
+  ) {
+    updateWorkout(
+      id: $id
+      data: { status: $status, feels: $feels, note: $note }
+    ) {
+      status
+      feels
+      note
+    }
+  }
+`;
 
 const workoutTypes = {
   REST: 'fa-couch',
@@ -63,10 +75,49 @@ export default function SingleWorkout({ id }) {
   const { data, error, loading } = useQuery(SINGLE_WORKOUT_QUERY, {
     variables: { id },
   });
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  const workout = data.Workout;
+
+  const workout = data?.Workout;
   console.log(workout);
+
+  const [analysis, setAnalysis] = useState({});
+
+  useEffect(() => {
+    // This function runs when the things we are watching change
+    setAnalysis({
+      id,
+      status: workout?.status || '',
+      feels: workout?.feels || 0,
+      note: workout?.note || '',
+    });
+  }, [data]);
+
+  const [
+    updateAnalysis,
+    {
+      data: updateAnalysisData,
+      error: updateAnalysisError,
+      loading: updateAnalysisLoading,
+    },
+  ] = useMutation(UPDATE_ANALYSIS_MUTATION, {
+    variables: analysis,
+  });
+
+  function handleAnalysisChange(e) {
+    e.preventDefault();
+    setAnalysis({
+      ...analysis,
+      [e.target.name]: e.target.value,
+    });
+    console.log(analysis);
+  }
+
+  async function handleAnalysisSubmit(e) {
+    e.preventDefault();
+    await updateAnalysis();
+  }
+
+  if (loading) return <Loading />;
+  if (error) return <p>Error: {error.message}</p>;
 
   const date = new Date(workout.date);
   const formattedDate = new Intl.DateTimeFormat('zh-Hant-tw', {
@@ -115,10 +166,11 @@ export default function SingleWorkout({ id }) {
           </div>
 
           <hr className="mt-6 border-b-1 border-blueGray-300" />
-          <form>
-            <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-              自我評量
-            </h6>
+
+          <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            自我分析
+          </h6>
+          <form id="analysis" onSubmit={handleAnalysisSubmit}>
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
@@ -128,18 +180,31 @@ export default function SingleWorkout({ id }) {
                   >
                     體感
                   </label>
-                  <input id="feel" type="range" />
+                  <input
+                    id="feels"
+                    name="feels"
+                    type="range"
+                    value={analysis.feels}
+                    onChange={handleAnalysisChange}
+                  />
                 </div>
               </div>
+
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
+                    htmlFor="status"
                   >
                     訓練結果
                   </label>
-                  <select className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  <select
+                    id="status"
+                    name="status"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    onChange={handleAnalysisChange}
+                    value={analysis.status}
+                  >
                     {status.map((item) => (
                       <option key={item.value} value={item.value}>
                         {item.label}
@@ -148,27 +213,58 @@ export default function SingleWorkout({ id }) {
                   </select>
                 </div>
               </div>
+
               <div className="w-full lg:w-12/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
+                    htmlFor="note"
                   >
                     備註
                   </label>
                   <textarea
+                    id="note"
+                    name="note"
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     rows="4"
-                    value={workout.note}
-                    onChange={(e) => {
-                      e.preventDefault();
-                    }}
+                    value={analysis.note}
+                    onChange={handleAnalysisChange}
                   />
                 </div>
               </div>
             </div>
+            <div>
+              <button
+                type="button"
+                className="bg-blueGray-700 active:bg-blueGray-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+              >
+                編輯
+              </button>
+              <button
+                type="submit"
+                form="analysis"
+                className="bg-blueGray-700 active:bg-blueGray-600 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+              >
+                確定
+              </button>
+              <button
+                type="button"
+                className="bg-white text-red-500 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 border border-solid border-red-500 active:bg-red-600 active:border-red-600 active:text-white"
+              >
+                取消
+              </button>
+            </div>
           </form>
+
+          <hr className="mt-6 border-b-1 border-blueGray-300" />
+
+          <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            附加檔案
+          </h6>
+
+          <hr className="mt-6 border-b-1 border-blueGray-300" />
+          <p>Comments</p>
         </div>
       </div>
     </>
