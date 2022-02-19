@@ -70,7 +70,7 @@ export default function CreateUser() {
         </div>
       </div>
       <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-        <form id="form" onSubmit={handleSubmit}>
+        <form id="form" onSubmit={handleSubmit} method="POST">
           <div className="flex flex-wrap">
             <div className="w-full px-4">
               <div className="relative w-full mb-3 mt-3">
